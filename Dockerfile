@@ -1,10 +1,15 @@
-FROM php:8.2-apache
+FFROM php:8.2-apache
 
-# Enable Apache mod_rewrite (if needed)
+# Enable mod_rewrite (optional)
 RUN a2enmod rewrite
 
-# Copy project files to web root
-COPY . /var/www/html/
+# Set working directory and copy project
+WORKDIR /var/www/html
 
-# Expose port 80
+COPY . /var/www/html
+
+# Change Apache DocumentRoot to point to /var/www/html/api
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/api|' /etc/apache2/sites-available/000-default.conf
+
+# Expose port
 EXPOSE 80
